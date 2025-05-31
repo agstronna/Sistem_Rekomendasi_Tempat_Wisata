@@ -211,6 +211,7 @@ Melakukan penyaringan data pada dataset tempat wisata sehingga hanya destinasi y
 **Kode Program:**
 ```python
 df_rating = pd.merge(df_rating, df_place[['Place_Id']], how='right', on='Place_Id')
+
 df_user = pd.merge(df_user, df_rating[['User_Id']], how='right', on='User_Id').drop_duplicates().sort_values('User_Id')
 ```
 
@@ -228,6 +229,7 @@ Menggabungkan dataset rating dengan dataset tempat wisata berdasarkan kolom Plac
 **Kode Program:**
 ```python
 tfidf_vectorizer_for_category = TfidfVectorizer()
+
 tfidf_matrix = tfidf_vectorizer_for_category.fit_transform(df_place['Category'])
 ```
 
@@ -250,11 +252,10 @@ def dict_encoder(col, data=df):
     val_encoded_to_val = {i: x for i, x in enumerate(unique_val)}
     return val_to_val_encoded, val_encoded_to_val
 
-# Encoding User_Id dan Place_Id
 user_to_user_encoded, user_encoded_to_user = dict_encoder('User_Id')
-place_to_place_encoded, place_encoded_to_place = dict_encoder('Place_Id')
-
 df['user'] = df['User_Id'].map(user_to_user_encoded)
+
+place_to_place_encoded, place_encoded_to_place = dict_encoder('Place_Id')
 df['place'] = df['Place_Id'].map(place_to_place_encoded)
 ```
 
@@ -274,6 +275,7 @@ Membuat fungsi khusus untuk mengonversi User_Id dan Place_Id menjadi indeks nume
 ```python
 df['Place_Ratings'] = df['Place_Ratings'].values.astype(np.float32)
 min_rating, max_rating = min(df['Place_Ratings']), max(df['Place_Ratings'])
+
 y = df['Place_Ratings'].apply(lambda x: (x - min_rating) / (max_rating - min_rating)).values
 ```
 
@@ -367,21 +369,21 @@ Dengan menggunakan rumus ini, kita dapat menghitung sejauh mana dua tempat wisat
 #### Implementasi Sistem CBF:
 
 ```python
-# Membuat TF-IDF vectorizer untuk kategori
+# Membuat model Content-Based Filtering berbasis kategori tempat wisata dengan menggunakan TF-IDF
 tfidf_vectorizer_for_category = TfidfVectorizer()
 tfidf_vectorizer_for_category.fit(df_place['Category'])
 
-# Membuat TF-IDF matrix
+# Mengubah data kategori tempat wisata menjadi representasi numerik menggunakan TF-IDF dan mengecek dimensinya
 tfidf_matrix = tfidf_vectorizer_for_category.fit_transform(df_place['Category'])
 
-# Menghitung cosine similarity matrix
+# Menghitung matriks kemiripan cosine antar tempat wisata berdasarkan representasi TF-IDF kategori mereka
 cosine_sim = cosine_similarity(tfidf_matrix)
 
-# Membuat DataFrame cosine similarity untuk kemudahan akses
+#  Membuat DataFrame dari matriks kemiripan cosine dengan nama tempat wisata sebagai indeks dan kolom
 cosine_sim_df = pd.DataFrame(
     cosine_sim, index=df_place.Place_Name, columns=df_place.Place_Name)
 
-# Fungsi untuk memberikan rekomendasi
+# Fungsi ini memberikan rekomendasi tempat wisata mirip berdasarkan kemiripan cosine kategori, dengan menerima nama tempat sebagai input dan mengembalikan daftar k tempat wisata terdekat
 def destination_recommendations(place_name, similarity_data=cosine_sim_df, 
                                items=df_place[['Place_Name', 'Category']], k=10):
     index = similarity_data.loc[:,place_name].to_numpy().argpartition(range(-1, -k, -1))
@@ -435,8 +437,10 @@ def dict_encoder(col, data=df):
     val_encoded_to_val = {i: x for i, x in enumerate(unique_val)}
     return val_to_val_encoded, val_encoded_to_val
 
-# Encoding pengguna dan tempat wisata
+# # Encoding User_Id
 user_to_user_encoded, user_encoded_to_user = dict_encoder('User_Id')
+
+# Encoding Place_Id
 place_to_place_encoded, place_encoded_to_place = dict_encoder('Place_Id')
 
 # Normalisasi rating
