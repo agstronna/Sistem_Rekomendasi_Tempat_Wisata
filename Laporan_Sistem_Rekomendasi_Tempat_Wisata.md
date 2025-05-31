@@ -654,31 +654,11 @@ class myCallback(tf.keras.callbacks.Callback):
 
 #### Hasil Evaluasi Collaborative Filtering
 
-Setelah menjalankan pelatihan selama 100 epoch dengan pemantauan menggunakan callback:
-
-| Metrik | Final Value | Target | Status |
-|--------|-------------|--------|--------|
-| Validation RMSE | 0.3544 | < 0.35 | Tidak Tercapai |
-| Training RMSE | 0.3120 | - | Konvergen |
-| Training Loss | 0.6572 | - | Menurun |
-| Validation Loss | 0.7225 | - | Stagnant |
-| Training Status | Completed (100/100 epochs) | Early Stop | Callback tidak terpicu |
-
-**Analisis Performa Collaborative Filtering:**
-- Model menunjukkan tanda-tanda **overfitting** dengan gap yang melebar antara training dan validation metrics
-- Validation RMSE terbaik dicapai pada epoch 12 (0.3514), kemudian berfluktuasi tanpa perbaikan signifikan
-- Training loss terus menurun (0.716 → 0.657) sementara validation loss relatif stabil (~0.72)
-
-Meskipun target RMSE < 0.35 belum tercapai (selisih 0.0044), model masih menunjukkan performa prediksi yang baik dengan kemampuan generalisasi yang perlu ditingkatkan melalui teknik regularisasi dan early stopping.
-
-
-#### Hasil Evaluasi Collaborative Filtering
-
-
+Setelah proses pelatihan selama 100 epoch dengan pemantauan callback:
 
 | Metrik           | Nilai Akhir             | Target     | Status               |
 | ---------------- | ----------------------- | ---------- | -------------------- |
-| Validation RMSE  | 0.3568                  | < 0.35     | Belum Tercapai       |
+| Validation RMSE  | 0.3568                  | < 0.35     | Belum tercapai       |
 | Training RMSE    | 0.3127                  | -          | Konvergen            |
 | Training Loss    | 0.6493                  | -          | Menurun              |
 | Validation Loss  | 0.7248                  | -          | Stabil               |
@@ -686,55 +666,59 @@ Meskipun target RMSE < 0.35 belum tercapai (selisih 0.0044), model masih menunju
 
 **Analisis Performa Collaborative Filtering:**
 
-* Model memperlihatkan indikasi **overfitting**, terlihat dari perbedaan yang signifikan antara metrik training dan validasi.
-* Nilai validation RMSE terbaik tercapai pada epoch ke-12 sebesar 0.3514, kemudian mengalami fluktuasi tanpa perbaikan yang berarti.
-* Training loss terus menurun dari 0.716 ke 0.657, sementara validation loss cenderung konstan di sekitar 0.72.
+* Model menunjukkan tanda-tanda **overfitting**, yang terlihat dari perbedaan cukup besar antara nilai metrik pada data training dan validasi.
+* Nilai validation RMSE terbaik tercatat pada epoch ke-22 dan ke-24 sebesar 0.3512, namun setelah itu mengalami fluktuasi tanpa perbaikan signifikan.
+* Training loss mengalami penurunan dari 0.7208 menjadi 0.6493, sedangkan validation loss tetap relatif stabil di kisaran 0.72.
 
-Meskipun target RMSE < 0.35 belum tercapai (selisih 0.0044), model tetap menunjukkan performa prediksi yang cukup baik, namun perlu peningkatan dalam hal generalisasi dengan menerapkan teknik regularisasi dan mekanisme early stopping.
-
+Walaupun target RMSE kurang dari 0.35 belum tercapai (tersisa selisih 0.0068), model masih mampu menghasilkan prediksi yang cukup baik, namun perlu upaya lebih lanjut untuk meningkatkan kemampuan generalisasi melalui penerapan teknik regularisasi dan penggunaan early stopping.
 
 #### Visualisasi Grafik RMSE Validasi
 
-Grafik berikut memperlihatkan perubahan nilai RMSE pada data validasi selama pelatihan:
+Grafik berikut menggambarkan perubahan nilai RMSE pada data validasi sepanjang proses pelatihan:
 
-![rmse_validation_plot](assets/rmse_validation.png)
+![grafik_RMSE](https://github.com/user-attachments/assets/e5d3ac72-320c-4c6a-8323-ad42c0298d54)
+
+*Gambar 4. Visualisasi Grafik RMSE Validasi*
 
 #### Analisis Kualitas Rekomendasi Collaborative Filtering
 
-Evaluasi kualitas rekomendasi untuk User 230:
+Evaluasi kualitas rekomendasi untuk User 111:
 
-| Evaluation Aspect | Analysis |
-|-------------------|----------|
-| **Personalization** | Rekomendasi beragam sesuai preferensi historis user |
-| **Diversity** | 4 kategori berbeda: Taman Hiburan, Cagar Alam, Budaya, Tempat Ibadah |
-| **Quality Ratings** | Rata-rata rating 4.45 (range: 4.1-4.8) |
-| **Price Range** | Beragam dari gratis hingga 40.000 |
-| **Relevance** | Sesuai dengan pola rating historis user |
+| Aspek Evaluasi      | Analisis                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| **Personalisasi**   | Rekomendasi bervariasi dan disesuaikan dengan riwayat preferensi pengguna                |
+| **Keragaman**       | Mencakup 4 kategori berbeda: Taman Hiburan, Cagar Alam, Budaya, Tempat Ibadah            |
+| **Kualitas Rating** | Rata-rata rating tinggi sebesar 4.45 (dengan rentang antara 4.2–4.6)                     |
+| **Rentang Harga**   | Pilihan harga beragam, mulai dari gratis hingga Rp30.000                                 |
+| **Relevansi**       | Selaras dengan pola rating historis pengguna, menunjukkan rekomendasi yang tepat sasaran |
 
-#### Perbandingan dengan Historical Preferences
+#### Perbandingan dengan Preferensi Historis
 
-User 230 memiliki preferensi historis:
-- **Taman Hiburan** (Trans Studio Bandung, Batununggal Indah Club)
-- **Cagar Alam** (Gunung Papandayan, Sunrise Point Cukul)
-- **Budaya** (Monumen Bandung Lautan Api)
+User 111 memiliki riwayat preferensi:
 
-Rekomendasi sistem mencerminkan preferensi ini dengan:
-- 50% Taman Hiburan (5/10)
-- 30% Cagar Alam (3/10)
-- 20% Budaya (2/10)
-- 10% Tempat Ibadah (1/10)
+* **Taman Hiburan** (Teras Cikapundung BBWS)
+* **Cagar Alam** (Wisata Batu Kuda, Sanghyang Heuleut)
+* **Budaya** (Museum Gedung Sate)
+* **Tempat Ibadah** (Masjid Agung Trans Studio Bandung)
+
+Rekomendasi yang diberikan sistem mencerminkan preferensi ini dengan distribusi sebagai berikut:
+
+* 10% Taman Hiburan (1 dari 10 rekomendasi)
+* 20% Cagar Alam (2 dari 10 rekomendasi)
+* 10% Budaya (1 dari 10 rekomendasi)
+* 10% Tempat Ibadah (1 dari 10 rekomendasi)
+
+---
+Berikut kalimat tabel yang sudah diperbaiki dan dirapikan:
 
 ---
 
 ### Perbandingan Performa Model
 
-| Model   | Kelebihan                                                                                                              | Kekurangan                                                                                  | Performance Score |
-|---------|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------|
-| **CBF** | - Category precision: 100%<br>- Cold start friendly<br>- Konsisten dan dapat diprediksi                                | - Terbatas pada metadata<br>- Kurang beragam<br>- Tidak personal                            | 8.5/10            |
-| **CF**  | - Highly personalized<br>- Rekomendasi beragam<br>- Quality ratings tinggi (avg: 4.45)                                 | - Membutuhkan data historis<br>- Cold start problem<br>- RMSE validasi belum capai target (< 0.35)  hasil final epochnya 0.3544 | 8.4/10            |
-
----
-
+| Model   | Kelebihan                                                                                         | Kekurangan                                                                                                                              | Skor Performa |
+| ------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **CBF** | - Precision kategori: 100%<br>- Mendukung cold start<br>- Konsisten dan mudah diprediksi          | - Terbatas pada metadata<br>- Kurang variasi<br>- Tidak dipersonalisasi secara spesifik                                                 | 8.5/10        |
+| **CF**  | - Sangat terpersonalisasi<br>- Rekomendasi lebih beragam<br>- Rata-rata rating tinggi (avg: 4.45) | - Membutuhkan data historis pengguna<br>- Masalah cold start<br>- RMSE validasi belum capai target (final epoch: 0.3568, target < 0.35) | 8.4/10        |
 
 ---
 
@@ -742,115 +726,56 @@ Rekomendasi sistem mencerminkan preferensi ini dengan:
 
 ### 1. Performa Model
 
-Model rekomendasi yang dikembangkan terdiri dari dua pendekatan utama:
+Dua pendekatan utama dikembangkan dalam sistem rekomendasi ini:
 
-* **Content-Based Filtering (CBF)** menunjukkan performa sangat baik dengan precision sempurna (100%) dalam menyarankan destinasi yang sesuai kategori. Rekomendasi bersifat konsisten, khususnya untuk pengguna baru atau yang belum memiliki histori interaksi.
-* **Collaborative Filtering (CF)** menghasilkan prediksi yang cukup akurat dengan nilai RMSE validasi sebesar **0.3544**, sedikit di atas target 0.35. Meskipun belum memenuhi target metrik sepenuhnya, model tetap menunjukkan performa kompetitif dan mampu memberikan rekomendasi yang beragam dan bersifat personal.
+* **Content-Based Filtering (CBF)** menunjukkan performa sangat baik dengan precision sempurna (100%) dalam menyarankan destinasi sesuai kategori. Model ini menghasilkan rekomendasi yang konsisten, terutama efektif untuk pengguna baru atau pengguna tanpa riwayat interaksi sebelumnya.
+* **Collaborative Filtering (CF)** mampu memberikan prediksi yang cukup akurat dengan nilai RMSE validasi **0.3568**, sedikit melampaui target 0.35. Meski target metrik belum sepenuhnya tercapai, performa model tetap kompetitif, menghasilkan rekomendasi yang beragam dan personal.
 
-Selama pelatihan selama 100 epoch, model CF menunjukkan indikasi **overfitting**, ditunjukkan dengan perbedaan signifikan antara training loss yang terus menurun dan validation loss yang cenderung stagnan. Hal ini menunjukkan bahwa model perlu ditingkatkan melalui teknik regularisasi dan pengaturan strategi early stopping yang lebih efektif.
+Selama proses training selama 100 epoch, model CF menunjukkan tanda-tanda **overfitting**, terlihat dari selisih mencolok antara training loss yang terus menurun dan validation loss yang relatif stagnan. Ini mengindikasikan perlunya perbaikan, misalnya dengan teknik regularisasi atau penyesuaian strategi early stopping.
 
 ### 2. Karakteristik Rekomendasi
 
-* **CBF:** Menyediakan rekomendasi homogen yang sangat relevan (contoh: semua tempat dari kategori Taman Hiburan). Cocok untuk pengguna dengan preferensi kategorial yang jelas.
-* **CF:** Menyediakan rekomendasi heterogen dari berbagai kategori (Taman Hiburan, Budaya, Cagar Alam, Tempat Ibadah) dan dapat menangkap preferensi pengguna berdasarkan interaksi historis.
+* **CBF:** Menghasilkan rekomendasi yang homogen dan sangat relevan (contoh: seluruh tempat wisata dari kategori Budaya). Cocok untuk pengguna dengan preferensi spesifik terhadap kategori tertentu.
+* **CF:** Menyediakan rekomendasi yang lebih bervariasi, mencakup berbagai kategori (Taman Hiburan, Budaya, Cagar Alam, Tempat Ibadah), serta mampu menangkap pola preferensi pengguna berdasarkan histori interaksi.
 
 ### 3. Kualitas Output
 
-* **CBF:** Fokus pada konsistensi, cocok untuk cold start user, dan menghasilkan output yang mudah diprediksi dan stabil.
-* **CF:** Menyajikan keseimbangan antara **personalization**, **diversity**, dan **rating kualitas konten** dengan rerata rating rekomendasi mencapai 4.45, serta distribusi harga tiket yang beragam.
+* **CBF:** Fokus pada konsistensi dan relevansi, ideal untuk skenario cold start, dengan hasil yang stabil dan dapat diprediksi.
+* **CF:** Menyajikan keseimbangan antara **personalization**, **diversity**, dan **rating kualitas konten** dengan rata-rata rating rekomendasi mencapai 4.45 serta distribusi harga tiket yang bervariasi.
 
-### 4. Model yang Direkomendasikan
+### 4. Rekomendasi Model
 
-* Untuk **pengguna baru** atau saat tidak ada data historis, **CBF** menjadi pilihan terbaik karena tidak bergantung pada data interaksi.
-* Untuk **pengguna aktif**, **CF** memberikan nilai lebih tinggi melalui pengalaman personal dan rekomendasi yang disesuaikan.
-
----
-
-## Keterkaitan dengan Business Understanding
-
-### Apakah Model Menjawab Problem Statement?
-
-Ya, kedua model yang dikembangkan secara langsung menjawab permasalahan bisnis yang telah diidentifikasi:
-
-* **Masalah utama:** Wisatawan mengalami kesulitan dalam menemukan destinasi yang sesuai dengan minat mereka, baik karena kurangnya personalisasi maupun banyaknya pilihan yang tersedia.
-* **Solusi yang diberikan:** Model rekomendasi berbasis **Content-Based Filtering (CBF)** dan **Collaborative Filtering (CF)** membantu mempersonalisasi hasil rekomendasi sesuai karakteristik pengguna.
-
-Secara khusus:
-
-* **CBF** sangat efektif untuk **pengguna baru (cold start user)**, karena sistem tetap dapat memberikan rekomendasi yang relevan berdasarkan kategori konten tempat wisata tanpa memerlukan data historis.
-* **CF** unggul dalam memberikan **rekomendasi yang dipersonalisasi** berdasarkan riwayat interaksi pengguna, sehingga sangat cocok untuk pengguna yang telah aktif memberikan rating.
-
-Dengan demikian, sistem ini berhasil mengurangi kebingungan pengguna dalam memilih destinasi, serta **meningkatkan potensi kunjungan ke tempat wisata yang relevan**, sejalan dengan tujuan peningkatan pengalaman pengguna dan dampak ekonomi lokal.
-
-### Apakah Model Mencapai Tujuan?
-
-Secara keseluruhan, proyek ini telah memenuhi sebagian besar tujuan yang ditetapkan, meskipun masih terdapat satu aspek yang memerlukan penyempurnaan lebih lanjut.
-
-| Tujuan Evaluasi                       | Hasil Model                    | Target               | Status         |
-| ------------------------------------- | ------------------------------ | -------------------- | -------------- |
-| Relevansi rekomendasi (CBF)           | Precision@10 = 100%           | > 80%                | Tercapai       |
-| Akurasi prediksi rating (CF)          | RMSE validasi = 0.3544         | < 0.35               | Belum Tercapai |
-| Personalisasi dan variasi rekomendasi | 4 kategori wisata berbeda      | Diversifikasi item   | Tercapai       |
-| Kualitas konten rekomendasi           | Rata-rata rating 4.45 dari 5   | Minimal 4.0          | Tercapai       |
-
-Meskipun nilai RMSE pada model Collaborative Filtering belum sepenuhnya memenuhi target kurang dari 0.35, selisih yang sangat kecil (hanya 0.0044) menunjukkan bahwa model memiliki potensi yang kuat. Secara keseluruhan, model tetap menunjukkan performa yang sangat baik dalam memberikan rekomendasi yang berkualitas, relevan, dan sesuai dengan preferensi pengguna, serta masih dapat ditingkatkan lebih lanjut melalui beberapa pendekatan.
-
-### Implikasi Bisnis
-
-* **Untuk wisatawan:** Sistem rekomendasi mempermudah proses pemilihan tempat wisata yang sesuai, menghemat waktu dan meningkatkan kepuasan perjalanan.
-* **Untuk pelaku usaha pariwisata:** Sistem ini mendorong visibilitas destinasi secara lebih adil dan personal, yang berpotensi meningkatkan kunjungan dan pendapatan.
-* **Untuk pemerintah/organisasi pariwisata:** Rekomendasi yang relevan dapat dimanfaatkan untuk menyusun strategi promosi wisata yang lebih terarah dan berbasis data.
-
----
-
-## Rekomendasi dan Langkah Selanjutnya
-
-### 1. Implementasi Hybrid System
-* Gunakan CBF untuk pengguna baru
-* Beralih ke CF setelah user memiliki minimal 5 rating
-
-### 2. Peningkatan CBF
-* Tambahkan fitur price range dan rating untuk meningkatkan diversity
-* Implementasi weighted similarity berdasarkan multiple features
-
-### 3. Optimasi CF
-* Implementasi negative sampling untuk meningkatkan kualitas embedding
-* Tambahkan contextual features (waktu, cuaca, musim)
-* Menerapkan teknik *early stopping* dengan nilai *patience* yang optimal agar pelatihan berhenti saat performa validasi tidak lagi meningkat
-* Menambahkan teknik regularisasi seperti dropout atau L1/L2 regularization untuk mengurangi overfitting
-* Melakukan optimasi hyperparameter seperti *learning rate*, *batch size*, dan arsitektur model
-* Menambah jumlah data pelatihan jika memungkinkan, atau menggunakan teknik augmentasi data
-* Menggunakan teknik *cross-validation* untuk mendapatkan evaluasi performa yang lebih stabil dan dapat diandalkan
-
-### 4. Business Implementation
-* A/B testing untuk mengukur user satisfaction
-* Real-time feedback integration
-* Mobile app deployment dengan recommendation API
+* Untuk **pengguna baru** atau kasus tanpa data interaksi, **CBF** menjadi pilihan utama karena tidak memerlukan data historis.
+* Untuk **pengguna aktif**, **CF** lebih unggul karena mampu menghadirkan rekomendasi yang dipersonalisasi sesuai pola perilaku dan preferensi pengguna.
 
 ---
 
 ## Kesimpulan
 
-1. Sistem rekomendasi wisata berbasis ML berhasil dibangun menggunakan dua pendekatan komplementer: Content-Based Filtering dan Collaborative Filtering.
+1. Sistem rekomendasi wisata berbasis machine learning berhasil dikembangkan dengan memadukan dua pendekatan yang saling melengkapi: Content-Based Filtering (CBF) dan Collaborative Filtering (CF).
 
-2. **Hasil evaluasi menunjukkan performa yang mixed**:
-   * **CBF** mencapai Precision@10 = 100% dengan konsistensi kategori yang sempurna.
-   * **CF** belum mencapai target RMSE < 0.35 (tercatat 0.3544) namun tetap memberikan rekomendasi yang personal dan beragam.
+2. **Hasil evaluasi menunjukkan performa yang beragam**:
 
-3. **Karakteristik unik masing-masing model**:
-   * **CBF** memberikan **konsistensi tinggi** untuk preferensi kategorial.
-   * **CF** memberikan **personalisasi tinggi** dengan diversity yang baik, meskipun RMSE nya masih bisa ditingkatkan.
+   * **CBF** berhasil mencapai Precision\@10 sebesar 100%, menunjukkan konsistensi sangat baik dalam menyarankan destinasi berdasarkan kategori.
+   * **CF** meskipun belum mencapai target RMSE < 0.35 (dengan capaian 0.3568), tetap mampu menghasilkan rekomendasi yang bersifat personal dan variatif.
 
-4. Proyek ini berhasil menjawab permasalahan bisnis dalam memberikan rekomendasi wisata yang akurat, relevan, dan personal di Kota Bandung.
+3. **Ciri khas masing-masing model**:
 
-5. Kombinasi kedua pendekatan memberikan solusi komprehensif yang dapat mengakomodasi berbagai skenario pengguna, dari newcomer hingga frequent traveler.
+   * **CBF** unggul dalam hal **konsistensi** terhadap preferensi berbasis kategori.
+   * **CF** menawarkan **personalisasi** yang kuat dengan keberagaman rekomendasi, meskipun masih ada ruang untuk peningkatan performa (terutama pada metrik RMSE).
 
-6. Sistem memiliki potensi besar untuk implementasi komersial dengan hasil evaluasi yang mendekati target dan kualitas rekomendasi yang tinggi.
+4. Proyek ini berhasil menjawab tantangan bisnis dengan menyediakan rekomendasi wisata yang akurat, relevan, dan sesuai kebutuhan pengguna di area Bandung.
+
+5. Perpaduan kedua pendekatan memberikan solusi yang menyeluruh, mampu memenuhi kebutuhan baik pengguna baru maupun pengguna aktif yang sering berinteraksi.
+
+6. Sistem ini memiliki potensi besar untuk dikembangkan lebih lanjut ke tahap implementasi komersial, mengingat hasil evaluasi yang mendekati target serta kualitas rekomendasi yang sudah tergolong tinggi.
 
 ---
 
 ## Referensi
 
-* Yanuar, R., & Sabani, W. A. P. (2020). Aplikasi Pembuat Jadwal Kunjungan Wisata Untuk Wisatawan Lokal Di Kota Bandung Berbasis Android. eProceedings of Applied Science, 6(3).
-* Pasaribu, Y. S., & Sitompul, T. S. (2023). Rekomendasi Destinasi Wisata Kota Bandung Menggunakan Algoritma Collaborative Filtering: Rekomendasi Destinasi Wisata Kota Bandung Menggunakan Algoritma Collaborative Filtering. Mutiara: Jurnal Penelitian dan Karya Ilmiah, 1(6), 382-392. [https://doi.org/10.3390/a16040215](https://doi.org/10.59059/mutiara.v1i6.736)
-* Adlan, M. N., & Setiawan, E. B. (2025). Sistem Rekomendasi Destinasi Wisata di Kota Bandung dengan Collaborative Filtering Menggunakan K-Nearest Neighbors. eProceedings of Engineering, 12(1), 2129-2136.
+* Yanuar, R., & Sabani, W. A. P. (2020). Aplikasi Pembuat Jadwal Kunjungan Wisata untuk Wisatawan Lokal di Kota Bandung Berbasis Android. *eProceedings of Applied Science*, 6(3).
+
+* Pasaribu, Y. S., & Sitompul, T. S. (2023). Rekomendasi Destinasi Wisata Kota Bandung Menggunakan Algoritma Collaborative Filtering. *Mutiara: Jurnal Penelitian dan Karya Ilmiah*, 1(6), 382–392. [https://doi.org/10.59059/mutiara.v1i6.736](https://doi.org/10.59059/mutiara.v1i6.736)
+
+* Adlan, M. N., & Setiawan, E. B. (2025). Sistem Rekomendasi Destinasi Wisata di Kota Bandung dengan Collaborative Filtering Menggunakan K-Nearest Neighbors. *eProceedings of Engineering*, 12(1), 2129–2136.
