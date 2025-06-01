@@ -1,6 +1,6 @@
-# Laporan Proyek Machine Learning – Rekomendasi Wisata Kota Bandung
+# Laporan Proyek Machine Learning – Agistia Ronna Aniqa
 
-![Ikon Kota Bandung](assets/iconic_bandung.jpeg)
+![explore](https://github.com/user-attachments/assets/2d93713a-e714-46b4-967a-fdd674b3cfa6)
 
 ## Project Overview
 
@@ -322,18 +322,18 @@ x_train, x_val, y_train, y_val = (
 **Proses yang Dilakukan:**
 Memisahkan fitur `user` dan `place` sebagai input (X), lalu menghitung indeks pembatas untuk membagi 80% data sebagai training dan 20% sisanya sebagai validasi, menggunakan pembagian manual berbasis indexing.
 
-**Alasan Mengapa Diperlukan:**
+**Alasan Dilakukan:**
 - Kontrol presisi terhadap proporsi pembagian data dengan rasio 80:20 yang optimal untuk training dan evaluasi
 - Implementasi manual memungkinkan penyesuaian khusus sesuai kebutuhan project dan karakteristik data
 - Memastikan pembagian data yang konsisten dan reproducible untuk perbandingan performa antar model
 - Memberikan fleksibilitas dalam mengatur strategi pembagian data tanpa tergantung pada library eksternal
 - Memungkinkan evaluasi model yang objektif dengan data validasi yang terpisah dari training
-- 
+  
 ### Insight 
 
 Setiap langkah dalam tahap data preparation memiliki peran penting untuk memastikan data yang digunakan dalam modeling sudah bersih, terstruktur, dan sesuai kebutuhan. Pendekatan manual yang diterapkan, seperti pada proses encoding, normalisasi, dan pembagian data, memberikan fleksibilitas penuh agar sistem rekomendasi yang dikembangkan benar-benar sesuai dengan kebutuhan dan tujuan akhir project. Perlu diingat, kualitas data preparation menentukan sekitar 70% dari keberhasilan sebuah project machine learning. Dengan menjalankan tahapan ini secara sistematis dan teliti, kita memastikan bahwa model Content-Based Filtering dan Collaborative Filtering dapat belajar secara optimal dan menghasilkan rekomendasi yang akurat, relevan, serta bernilai bagi pengguna.
 
-#### Catatan Penting:
+#### Catatan:
 
 * Normalisasi dilakukan manual karena model berbasis embedding atau neural network lebih stabil saat menerima input dalam rentang kecil (0–1).
 * Proses encoding ID menggunakan dictionary custom untuk mempermudah mapping kembali ke ID asli saat interpretasi hasil.
@@ -347,6 +347,18 @@ Setiap langkah dalam tahap data preparation memiliki peran penting untuk memasti
 ### 1. Content-Based Filtering (CBF)
 
 Content-Based Filtering (CBF) adalah pendekatan yang merekomendasikan item dalam konteks ini, tempat wisata berdasarkan kemiripan karakteristik atau kontennya. Setelah sebelumnya kita mengubah data kategori tempat wisata menjadi representasi vektor numerik dengan metode TF-IDF pada tahap data preparation, sistem CBF dikembangkan melalui langkah-langkah berikut:
+
+Kelebihan Content-Based Filtering (CBF):
+- Tidak bergantung pada data historis pengguna (cocok untuk cold-start user).
+- Memberikan rekomendasi yang konsisten berdasarkan deskripsi atau fitur konten.
+- Tidak terpengaruh masalah popularitas atau tren umum (bisa menemukan item niche yang sesuai).
+- Mudah ditafsirkan, karena alasan rekomendasi jelas berasal dari kemiripan fitur.
+
+Kekurangan Content-Based Filtering (CBF):
+- Terbatas pada informasi yang tersedia di metadata, jika data konten sedikit, hasilnya pun terbatas.
+- Cenderung menghasilkan rekomendasi homogen, sehingga kurang menawarkan keberagaman (sering disebut problem overspecialization).
+- Tidak mempertimbangkan feedback eksplisit atau rating pengguna lain, sehingga personalisasi bersifat dangkal.
+- Sulit merekomendasikan item yang tidak punya kemiripan jelas di tingkat fitur, meskipun sebenarnya disukai pengguna.
 
 #### Pembangunan Sistem CBF dengan Cosine Similarity
 
@@ -421,9 +433,21 @@ Hasil keluaran dari sistem Content-Based Filtering. Visualisasi ini menunjukkan 
 
 *Gambar 2. Visualisasi Hasil Output dari Content Based Filtering*
 
-### 2. Collaborative Filtering 
+### 2. Collaborative Filtering (CF)
 
 Collaborative Filtering adalah teknik rekomendasi yang memanfaatkan pola interaksi antar pengguna dan item, tanpa melihat konten dari item itu sendiri. Metode ini mengandalkan kesamaan perilaku antar pengguna untuk memprediksi preferensi.
+
+Kelebihan Collaborative Filtering (CF):
+- Mampu menangkap pola preferensi unik setiap pengguna berdasarkan riwayat interaksi mereka.
+- Tidak terbatas pada konten item, sehingga dapat merekomendasikan tempat yang secara konten berbeda namun disukai oleh pengguna lain dengan pola preferensi serupa.
+- Performa cenderung meningkat seiring dengan bertambahnya jumlah data pengguna dan interaksi.
+- Tidak memerlukan metadata konten yang rinci, asalkan item memiliki cukup interaksi.
+
+Kekurangan Collaborative Filtering (CF):
+- Sulit memberikan rekomendasi yang akurat untuk pengguna baru yang belum memiliki riwayat interaksi (cold-start problem).
+- Performa menurun jika data interaksi sangat jarang atau sparse.
+- Rentan terhadap overfitting, terutama pada model berbasis deep learning tanpa penerapan teknik regularisasi yang tepat.
+- Untuk dataset yang sangat besar, komputasi embedding dan matriks kesamaan dapat menjadi sangat kompleks dan membutuhkan sumber daya komputasi tinggi.
 
 Pada proyek ini, pendekatan yang digunakan adalah berbasis deep learning dengan membangun model **RecommenderNet** menggunakan framework TensorFlow.
 
@@ -547,8 +571,8 @@ Keterangan:
 
 Analisis singkat berdasarkan rekomendasi untuk User 111:
 
-* Mayoritas rekomendasi (5 dari 10) berasal dari kategori **Cagar Alam**, menunjukkan preferensi pengguna terhadap wisata alam.
-* Rata-rata rating rekomendasi cukup tinggi, sekitar **4.45**, yang menandakan sistem memilih tempat yang berkualitas.
+* Mayoritas rekomendasi (6 dari 10) berasal dari kategori **Cagar Alam**, menunjukkan preferensi pengguna terhadap wisata alam.
+* Rata-rata rating rekomendasi cukup tinggi, sekitar **4.34**, yang menandakan sistem memilih tempat yang berkualitas.
 * Harga tiket bervariasi dari **gratis sampai Rp 30.000**, memberikan pilihan yang beragam untuk berbagai segmen pengguna.
 * Rekomendasi mencakup berbagai jenis tempat, sehingga menawarkan variasi bagi pengguna.
 
@@ -692,7 +716,7 @@ Evaluasi kualitas rekomendasi untuk User 111:
 | ------------------- | ---------------------------------------------------------------------------------------- |
 | **Personalisasi**   | Rekomendasi bervariasi dan disesuaikan dengan riwayat preferensi pengguna                |
 | **Keragaman**       | Mencakup 4 kategori berbeda: Taman Hiburan, Cagar Alam, Budaya, Tempat Ibadah            |
-| **Kualitas Rating** | Rata-rata rating tinggi sebesar 4.45 (dengan rentang antara 4.2–4.6)                     |
+| **Kualitas Rating** | Rata-rata rating tinggi sebesar 4.34 (dengan rentang antara 4.2–4.6)                     |
 | **Rentang Harga**   | Pilihan harga beragam, mulai dari gratis hingga Rp30.000                                 |
 | **Relevansi**       | Selaras dengan pola rating historis pengguna, menunjukkan rekomendasi yang tepat sasaran |
 
@@ -707,13 +731,9 @@ User 111 memiliki riwayat preferensi:
 
 Rekomendasi yang diberikan sistem mencerminkan preferensi ini dengan distribusi sebagai berikut:
 
-* 10% Taman Hiburan (1 dari 10 rekomendasi)
-* 20% Cagar Alam (2 dari 10 rekomendasi)
+* 30% Taman Hiburan (3 dari 10 rekomendasi)
+* 60% Cagar Alam (6 dari 10 rekomendasi)
 * 10% Budaya (1 dari 10 rekomendasi)
-* 10% Tempat Ibadah (1 dari 10 rekomendasi)
-
----
-Berikut kalimat tabel yang sudah diperbaiki dan dirapikan:
 
 ---
 
@@ -722,7 +742,7 @@ Berikut kalimat tabel yang sudah diperbaiki dan dirapikan:
 | Model   | Kelebihan                                                                                         | Kekurangan                                                                                                                              | Skor Performa |
 | ------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | **CBF** | - Precision kategori: 100%<br>- Mendukung cold start<br>- Konsisten dan mudah diprediksi          | - Terbatas pada metadata<br>- Kurang variasi<br>- Tidak dipersonalisasi secara spesifik                                                 | 8.5/10        |
-| **CF**  | - Sangat terpersonalisasi<br>- Rekomendasi lebih beragam<br>- Rata-rata rating tinggi (avg: 4.45) | - Membutuhkan data historis pengguna<br>- Masalah cold start<br>- RMSE validasi belum capai target (final epoch: 0.3568, target < 0.35) | 8.4/10        |
+| **CF**  | - Sangat terpersonalisasi<br>- Rekomendasi lebih beragam<br>- Rata-rata rating tinggi (avg: 4.34) | - Membutuhkan data historis pengguna<br>- Masalah cold start<br>- RMSE validasi belum capai target (final epoch: 0.3568, target < 0.35) | 8.4/10        |
 
 ---
 
